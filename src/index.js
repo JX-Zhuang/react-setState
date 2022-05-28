@@ -1,17 +1,35 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import Counter from './Counter';
+import { batchedUpdates } from './ReactFiberWorkLoop';
+import { NoMode, ConcurrentMode } from './ReactTypeOfMode';
+import { ClassComponent, HostRoot } from './ReactWorkTag';
+let counterInstance = new Counter();
+let mode = NoMode;//ConcurrentMode;
+let rootFiber = {
+    tag: HostRoot,
+    updateQueue: [],    //更新队列，源码里是链表
+    mode
+};
+let counterFiber = {
+    tag: ClassComponent,
+    updateQueue: [],
+    mode
+};
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+counterFiber.stateNode = counterInstance;
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+counterInstance._reactInternals = counterFiber;
+
+rootFiber.child = counterFiber;
+counterFiber.return = rootFiber;
+
+
+//合成事件
+document.addEventListener('click', (nativeEvent) => {
+    let syntheticEvent = { nativeEvent };
+    //源码里先通过事件，找到事件源，再通过事件源找到对应的处理函数
+    batchedUpdates(()=>counterInstance.onClick(syntheticEvent));
+});
+// ReactDOM.render(<Counter />, document.getElementById('root'));
+// ReactDOM.createRoot(document.getElementById('root')).render(<Counter/>);

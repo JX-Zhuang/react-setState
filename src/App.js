@@ -1,25 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React, { useEffect, useState } from 'react'
+// import React from './packages/react';
+const Item = () => {
+  useEffect(() => {
+    console.log('did mount');
+  }, []);
+  return <div>item</div>
 }
-
+const App = () => {
+  const [a, setA] = useState(false);
+  return <div onClick={() => setA(true)}>
+    {a ? <p key="1">ppp</p> : <div>div</div>}
+    <Item key="item" />
+  </div>
+}
 export default App;
