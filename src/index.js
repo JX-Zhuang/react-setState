@@ -30,6 +30,12 @@ document.addEventListener('click', (nativeEvent) => {
     let syntheticEvent = { nativeEvent };
     //源码里先通过事件，找到事件源，再通过事件源找到对应的处理函数
     batchedUpdates(()=>counterInstance.onClick(syntheticEvent));
+    // counterInstance.onClick(syntheticEvent);
 });
 // ReactDOM.render(<Counter />, document.getElementById('root'));
 // ReactDOM.createRoot(document.getElementById('root')).render(<Counter/>);
+const App = ()=>{
+    return <div>app</div>
+}
+console.log(App)
+console.log(<App/>)

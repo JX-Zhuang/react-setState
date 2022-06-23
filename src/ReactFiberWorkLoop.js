@@ -13,6 +13,7 @@ export function scheduleUpdateOnFiber(fiber) {
     ensureRootIsScheduled(root);
     //如果当前的执行上下文环境是NoContext（非批量），并且mode不是并发的话
     if (executionContext === NoContext && (fiber.mode & ConcurrentMode) === NoMode) {
+        debugger
         flushSyncCallbackQueue();
     }
 }
